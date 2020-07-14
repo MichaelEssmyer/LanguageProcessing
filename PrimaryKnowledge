@@ -1,0 +1,40 @@
+from stanfordcorenlp import StanfordCoreNLP
+from textblob import TextBlob
+
+# Preset
+host = 'http://localhost'
+port = 9000
+nlp = StanfordCoreNLP(host, port=port,timeout=30000)
+
+# The sentence you want to parse
+sentence0 = 'This is a new sentence.'
+sentence1 = 'The dog saw john at the park.'
+sentence2 = 'The little bear saw the fine fat trout in the rocky brook.'
+
+# Test file
+f = open('aminegg.txt', 'r')
+x = f.readlines()
+f.close()
+
+for sentence in x:
+    # POS
+    print('POS：', nlp.pos_tag(sentence))
+
+    # Tokenize
+    print('Tokenize：', nlp.word_tokenize(sentence))
+
+    # NER
+    print('NER：', nlp.ner(sentence))
+
+    # Parser
+    print('Parser：')
+    print(nlp.parse(sentence))
+    print(nlp.dependency_parse(sentence))
+
+    #sentiment analysis
+    textblob_sentence = TextBlob(sentence)
+    print(textblob_sentence.sentiment.polarity)
+
+# Close Stanford Parser
+nlp.close()
+print("Program Ended")
